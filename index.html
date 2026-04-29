@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>VOID WORKS</title>
+<title>DEPTH CORE</title>
 
 <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
 <script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
@@ -10,10 +10,45 @@
 <style>
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: Helvetica, Arial;
   background: #000;
   color: #fff;
   overflow-x: hidden;
+}
+
+/* ナビ */
+.nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  z-index: 100;
+}
+
+.logo {
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.menu {
+  cursor: pointer;
+}
+
+/* メニューオーバーレイ */
+.menu-panel {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  background: #000;
+  top: 0;
+  left: 0;
+  transform: translateY(-100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 /* セクション */
@@ -31,8 +66,8 @@ section {
 }
 
 .hero h1 {
-  font-size: 60px;
-  letter-spacing: 8px;
+  font-size: 80px;
+  letter-spacing: 10px;
 }
 
 /* 背景 */
@@ -40,81 +75,62 @@ section {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: url("https://images.unsplash.com/photo-1492724441997-5dc865305da7") center/cover;
-  filter: blur(6px);
-  opacity: 0.5;
+  background: url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee") center/cover;
+  filter: blur(10px);
 }
 
 /* プロダクト */
 .product img {
-  width: 300px;
+  width: 400px;
   border-radius: 20px;
-}
-
-/* テキスト */
-.text {
-  max-width: 600px;
-  text-align: center;
-  line-height: 1.6;
 }
 
 /* フッター */
 footer {
-  padding: 40px;
-  text-align: center;
+  height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  opacity: 0.5;
 }
 </style>
 </head>
 
 <body>
 
-<!-- HERO -->
+<div class="nav">
+  <div class="logo">CORE</div>
+  <div class="menu">MENU</div>
+</div>
+
+<div class="menu-panel">
+  <h2>ABOUT</h2>
+  <h2>PRODUCT</h2>
+  <h2>CONTACT</h2>
+</div>
+
 <section class="hero">
   <div class="bg"></div>
-  <h1>VOID WORKS</h1>
+  <h1>DEPTH</h1>
 </section>
 
-<!-- ABOUT -->
-<section>
-  <div class="text">
-    <h2>ABOUT</h2>
-    <p>
-      We design products born from emptiness.  
-      Precision, depth, and silence define our work.
-    </p>
-  </div>
-</section>
-
-<!-- PRODUCT -->
 <section class="product">
   <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8">
 </section>
 
-<!-- TECHNOLOGY -->
 <section>
-  <div class="text">
-    <h2>TECHNOLOGY</h2>
-    <p>
-      Advanced machining and engineering create  
-      products that exist beyond the surface.
-    </p>
-  </div>
+  <h2>ENGINEERED FOR DEPTH</h2>
 </section>
 
-<!-- CONTACT -->
-<section>
-  <div class="text">
-    <h2>CONTACT</h2>
-    <p>contact@voidworks.jp</p>
-  </div>
-</section>
-
-<footer>© VOID WORKS</footer>
+<footer>
+  © CORE EXPERIENCE
+</footer>
 
 <script>
 gsap.registerPlugin(ScrollTrigger);
 
-/* HERO 奥行き */
+/* ヒーロー */
 gsap.from(".hero h1", {
   scale: 0.5,
   opacity: 0,
@@ -123,38 +139,28 @@ gsap.from(".hero h1", {
 
 /* 背景パララックス */
 gsap.to(".bg", {
-  scale: 1.2,
-  y: -100,
+  scale: 1.3,
+  y: -200,
   filter: "blur(2px)",
   scrollTrigger: {
     scrub: true
   }
 });
 
-/* テキスト */
-gsap.from(".text", {
-  y: 50,
-  opacity: 0,
-  stagger: 0.2,
-  scrollTrigger: {
-    trigger: ".text",
-    start: "top 80%"
-  }
-});
-
 /* プロダクト出現 */
 gsap.fromTo(".product img",
   {
-    scale: 0.6,
+    scale: 0.5,
     opacity: 0,
-    filter: "blur(10px)",
-    z: -200
+    z: -300,
+    filter: "blur(10px)"
   },
   {
-    scale: 1.3,
+    scale: 1.5,
     opacity: 1,
+    z: 300,
+    y: -200,
     filter: "blur(0px)",
-    z: 200,
     scrollTrigger: {
       trigger: ".product",
       start: "top center",
@@ -162,6 +168,23 @@ gsap.fromTo(".product img",
     }
   }
 );
+
+/* ピン留め */
+ScrollTrigger.create({
+  trigger: ".product",
+  start: "top top",
+  end: "+=150%",
+  pin: true,
+  scrub: true
+});
+
+/* メニュー */
+const menu = document.querySelector(".menu");
+const panel = document.querySelector(".menu-panel");
+
+menu.addEventListener("click", () => {
+  gsap.to(panel, { y: "100%", duration: 0.8 });
+});
 </script>
 
 </body>
